@@ -1,38 +1,82 @@
+import copy
 from tkinter import *
+from PIL import Image,ImageTk
 from tkinter.filedialog import askopenfilename
 from tkinter.messagebox import showerror
 
-def user_browse():
-    imgfile = askopenfilename(initialdir="/home/ari/",title="Select the Image File",filetypes=(("JPEG","*.jpg"),("PNG","*.png")))
-    if imgfile:
-        try:
-            print(imgfile)
-        except:  # <- naked except is a bad idea
-            showerror("Open Source File", "Failed to read file\n'%s'" % imgfile)
-        return
 
-def user_exit():
-    exit()
+class Window(Frame):
 
-window = Tk()
-#creating a frame of size 500x500
-window.geometry("500x500")
 
-#set the frame title
-window.title("Handwritten Numbers Recognition")
+    def __init__(self, master=None):
+        Frame.__init__(self, master)                 
+        self.master = master
+        self.init_window()
 
-#setting up the backgroud
+    #Creation of init_window
+    def init_window(self):
+        # changing the title of our master widget      
+        self.master.title("GUI")
 
-background_img = PhotoImage(file = "Numbers.png")
-background_lb = Label (window,image = background_img)
-background_lb.place(x=0,y=0,relheight=1,relwidth=1)
+        #setting up the background image for the frame
+        self.image = Image.open("/home/ari/PycharmProjects/NumberDetectionGui/Numbers.png")
+        self.img_copy = self.image.copy()
 
-#creating two buttons ---- 1.for browsing the file ---- 2.for quit the app
-BrowseButton = Button(window,text="Browse The Image File",fg="white",bg="black",command=user_browse,activebackground="green",activeforeground="white")
-QuitButton = Button (window,text = "Quit",fg="white",bg="black",activebackground="red",activeforeground="white",command=user_exit)
+        self.background_image = ImageTk.PhotoImage(self.image)
 
-#placing those buttons in the frame
-QuitButton.place(x=210,y=235)
-BrowseButton.place(x=160,y=190)
+        self.background = Label(self, image=self.background_image)
+        self.background.pack(fill=BOTH, expand=YES)
+        self.background.bind('<Configure>', self._resize_image)
+        self.pack(fill=BOTH,expand=1)
+        # allowing the widget to take the full space of the root window
 
-window.mainloop()
+
+        #setting up the buttons
+        # creating a button instance
+        BrowseButton = Button(self, text="Browse The Image File", fg="white", bg="black", command=self.user_browse,
+                              activebackground="green", activeforeground="white")
+        QuitButton = Button(self, text="Quit", fg="white", bg="black", activebackground="red",
+                            activeforeground="white", command=self.user_exit)
+
+        # placing those buttons in the frame
+        QuitButton.place(x=210, y=235)
+        BrowseButton.place(x=160, y=190)
+
+
+	#user presses the browse button
+    def user_browse(self):
+        imgfile = askopenfilename(initialdir="/home/ari/PycharmProjects/NumberDetectionGui/Test_Images/", title="Select the Image File",
+                                  filetypes=(("JPEG", "*.jpg"), ("PNG", "*.png")))
+        if imgfile:
+            try:
+                print(imgfile)
+            except:  # <- naked except is a bad idea
+                showerror("Open Source File", "Failed to read file\n'%s'" % imgfile)
+            return
+	
+	#user presses the exit button
+    def user_exit(self):
+        exit()
+
+    def _resize_image(self,event):
+        new_width = event.width
+        new_height = event.height
+
+        self.image = self.img_copy.resize((new_width, new_height))
+
+        self.background_image = ImageTk.PhotoImage(self.image)
+        self.background.configure(image=self.background_image)
+
+
+
+
+
+
+if __name__ == "__main__":
+    root = Tk()
+    #size of the window
+    root.geometry("500x500")
+
+    app = Window(root)
+    root.mainloop()
+
