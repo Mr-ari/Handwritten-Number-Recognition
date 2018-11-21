@@ -39,8 +39,8 @@ class Window(Frame):
                             activeforeground="white", command=self.user_exit)
 
         # placing those buttons in the frame
-        QuitButton.place(x=210, y=235)
-        BrowseButton.place(x=160, y=190)
+        QuitButton.place(relx=0.5, rely=0.5,anchor = CENTER)
+        BrowseButton.place(relx=0.5, rely=0.4,anchor=CENTER)
 
 
 	#user presses the browse button
