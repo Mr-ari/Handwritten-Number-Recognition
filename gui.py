@@ -1,4 +1,15 @@
-import copy
+"""
+-----------------------------------------------------------------------------------------------------------
+
+            Project Name : User Interface for the Number Detection
+            Date         : 21/11/2018 21:42 TUE
+            Author       : Arijit Ghosh
+
+-----------------------------------------------------------------------------------------------------------
+
+"""
+
+
 from tkinter import *
 from PIL import Image,ImageTk
 from tkinter.filedialog import askopenfilename
@@ -42,16 +53,18 @@ class Window(Frame):
         QuitButton.place(relx=0.5, rely=0.5,anchor = CENTER)
         BrowseButton.place(relx=0.5, rely=0.4,anchor=CENTER)
 
+    def get_imagefile(self):
+        return self.imgfile
 
 	#user presses the browse button
     def user_browse(self):
-        imgfile = askopenfilename(initialdir="/home/ari/PycharmProjects/NumberDetectionGui/Test_Images/", title="Select the Image File",
+        self.imgfile = askopenfilename(initialdir="/home/ari/PycharmProjects/NumberDetectionGui/Test_Images/", title="Select the Image File",
                                   filetypes=(("JPEG", "*.jpg"), ("PNG", "*.png")))
-        if imgfile:
+        if self.imgfile:
             try:
-                print(imgfile)
+                print(self.imgfile)
             except:  # <- naked except is a bad idea
-                showerror("Open Source File", "Failed to read file\n'%s'" % imgfile)
+                showerror("Open Source File", "Failed to read file\n'%s'" % self.imgfile)
             return
 	
 	#user presses the exit button
