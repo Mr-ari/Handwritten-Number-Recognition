@@ -30,7 +30,7 @@ class Window(Frame):
         self.master.title("GUI")
 
         #setting up the background image for the frame
-        self.image = Image.open("/home/ari/PycharmProjects/NumberDetectionGui/Numbers.png")
+        self.image = Image.open("background.jpeg")
         self.img_copy = self.image.copy()
 
         self.background_image = ImageTk.PhotoImage(self.image)
