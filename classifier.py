@@ -47,7 +47,7 @@ model.compile(loss='categorical_crossentropy', optimizer=Adam(), metrics=['accur
 model.fit(X_train, y_train, validation_data=(X_test, y_test), epochs=10, batch_size=200)
 
 # Save the model
-model.save('classifier.h5')
+model.save('Datas/classifier.h5')
 
 # Final evaluation of the model
 metrics = model.evaluate(X_test, y_test, verbose=0)
